@@ -61,7 +61,8 @@ public class MobileContextUtils implements IDriverPool {
         NATIVE("NATIVE_APP"),
         WEB_CARINA("WEBVIEW_com.solvd.carinademoapplication"),
 
-        WEB_BROWSER("WEBVIEW_");
+        WEB_BROWSER("WEBVIEW_"),
+        WEB_CHROME("WEBVIEW_chrome");
 
         String viewName;
 

@@ -4,8 +4,10 @@ import com.zebrunner.carina.core.IAbstractTest;
 import com.zebrunner.carina.core.registrar.ownership.MethodOwner;
 import com.zebrunner.carina.demo.gui.pages.android.HomePage;
 import com.zebrunner.carina.demo.gui.pages.common.HomePageBase;
+import com.zebrunner.carina.demo.utils.MobileContextUtils;
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -16,7 +18,9 @@ public class HomepageTests implements IAbstractTest {
     @Test(dataProvider="usernameData")
     @MethodOwner(owner = "Alexis")
     public void loginButtonTest(String username) throws InterruptedException {
-        HomePage homePage = (HomePage) initPage(getDriver(), HomePageBase.class);
+        HomePageBase homePage = initPage(getDriver(), HomePageBase.class);
+        MobileContextUtils mobileContextUtils = new MobileContextUtils();
+        mobileContextUtils.switchMobileContext(MobileContextUtils.View.WEB_CHROME);
         var loginPage = homePage.clickLoginButton();
         loginPage.clickUsernameBox(username);
         loginPage.clickContinueButton();
@@ -36,12 +40,15 @@ public class HomepageTests implements IAbstractTest {
         return data;
     }
     @Test()
+    @MethodOwner(owner = "Alexis")
     public void searchButtonTest() throws InterruptedException {
-        HomePage homePageEbay = new HomePage(getDriver());
+        HomePageBase homePageEbay = initPage(getDriver(), HomePageBase.class);
+        MobileContextUtils mobileContextUtils = new MobileContextUtils();
+        mobileContextUtils.switchMobileContext(MobileContextUtils.View.WEB_CHROME);
         System.out.println("Thread ID is: " + Thread.currentThread().getId());
         homePageEbay.clickCloseAd();
         homePageEbay.clickSearchBox("Iphone");
-        homePageEbay.clickSearchButton();
+//        homePageEbay.clickSearchButton();
         Thread.sleep(5000);
 
         Assert.assertEquals(homePageEbay.getNumberOfSearchedElements(), 123, "The number of elements did not match");

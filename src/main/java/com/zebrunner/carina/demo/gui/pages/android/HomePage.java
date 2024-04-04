@@ -8,16 +8,13 @@ import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 @DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = HomePageBase.class)
 public class HomePage extends HomePageBase {
     @FindBy(xpath = "//a[@_sp='m570.l1524']")
     ExtendedWebElement loginButton;
-    @FindBy(className = "gh-tb")
+    @FindBy(id = "com.ebay.mobile:id/search_box")
     ExtendedWebElement searchBox;
     @FindBy(id = "gh-btn")
     ExtendedWebElement searchButton;
@@ -29,6 +26,7 @@ public class HomePage extends HomePageBase {
     ExtendedWebElement sportsCategory;
     @FindBy(xpath = "(//a[contains(text(), 'Moda')])[2]")
     ExtendedWebElement fashionCategory;
+
     @FindBy(linkText = "Calzado")
     ExtendedWebElement footwear;
 
@@ -36,7 +34,10 @@ public class HomePage extends HomePageBase {
     List<ExtendedWebElement> fashionHoverList;
 
     @FindBy(id = "com.ebay.mobile:id/home_app_onboarding_screen_close")
-    private ExtendedWebElement closeAd;
+    ExtendedWebElement closeAd;
+
+    @FindBy(id = "com.ebay.mobile:id/search_src_text")
+    ExtendedWebElement searchBoxText;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -50,7 +51,8 @@ public class HomePage extends HomePageBase {
 
     @Override
     public void clickSearchBox(String elementToSearch) {
-        searchBox.type(elementToSearch);
+        searchBox.click();
+        searchBoxText.type(elementToSearch);
     }
 
     @Override
