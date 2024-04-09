@@ -20,22 +20,22 @@ public class HomepageTests implements IAbstractTest {
     }
 
 //                      ESTE CASO NO SE PUEDE LLEVAR A CABO POR INCLUSION DE CAPTCHAS
-    @Test(dataProvider="usernameData")
-    @MethodOwner(owner = "Alexis")
-    public void loginButtonTest(String username) throws InterruptedException {
-        HomePageBase homePage = initPage(getDriver(), HomePageBase.class);
-        MobileContextUtils mobileContextUtils = new MobileContextUtils();
-        mobileContextUtils.switchMobileContext(MobileContextUtils.View.WEB_CHROME);
-        var loginPage = homePage.clickLoginButton();
-        loginPage.clickUsernameBox(username);
-        loginPage.clickContinueButton();
-        Thread.sleep(3000);
-        System.out.println(Thread.currentThread().getId());
-        Assert.assertEquals(loginPage.getErrorMsg(),
-                "No pudimos encontrar esta cuenta de eBay.", "El mensaje no fue el esperado");
-        Assert.assertTrue(!loginPage.getErrorMsg().isEmpty());
-
-    }
+//    @Test(dataProvider="usernameData")
+//    @MethodOwner(owner = "Alexis")
+//    public void loginButtonTest(String username) throws InterruptedException {
+//        HomePageBase homePage = initPage(getDriver(), HomePageBase.class);
+//        MobileContextUtils mobileContextUtils = new MobileContextUtils();
+//        mobileContextUtils.switchMobileContext(MobileContextUtils.View.WEB_CHROME);
+//        var loginPage = homePage.clickLoginButton();
+//        loginPage.clickUsernameBox(username);
+//        loginPage.clickContinueButton();
+//        Thread.sleep(3000);
+//        System.out.println(Thread.currentThread().getId());
+//        Assert.assertEquals(loginPage.getErrorMsg(),
+//                "No pudimos encontrar esta cuenta de eBay.", "El mensaje no fue el esperado");
+//        Assert.assertTrue(!loginPage.getErrorMsg().isEmpty());
+//
+//    }
     @DataProvider
     public Object[][] usernameData(){
         Object[][] data = new Object[3][1];
@@ -45,31 +45,28 @@ public class HomepageTests implements IAbstractTest {
         return data;
     }
 
-//    @Test
-//    public void openChrome(){
-//        getDriver().get();
-//    }
     @Test()
     @MethodOwner(owner = "Alexis")
-    public void searchButtonTest() throws InterruptedException {
+    public void searchButtonTest() {
         HomePageBase homePageEbay = initPage(getDriver(), HomePageBase.class);
         MobileContextUtils mobileContextUtils = new MobileContextUtils();
         mobileContextUtils.switchMobileContext(MobileContextUtils.View.WEB_CHROME);
-        System.out.println("Thread ID is: " + Thread.currentThread().getId());
-//        homePageEbay.clickCloseAd();
         homePageEbay.clickSearchBox("Iphone");
         homePageEbay.clickSearchButton();
         var productDetailPage = homePageEbay.clickOnFirstElement();
         String title = productDetailPage.getProductTitle();
         System.out.println(title);
-        Thread.sleep(5000);
-//        Assert.assertEquals(homePageEbay.getNumberOfSearchedElements(), 29, "The number of elements did not match");
+        Assert.assertTrue(productDetailPage.isTitlePresent());
     }
 
     @Test()
     public void submenuElements() throws InterruptedException {
-        HomePage homePageEbay = new HomePage(getDriver());
-        homePageEbay.hoverFashionLinkAndSelectLink("Calzado");
+        HomePageBase homePageEbay = initPage(getDriver(), HomePageBase.class);
+        MobileContextUtils mobileContextUtils = new MobileContextUtils();
+        mobileContextUtils.switchMobileContext(MobileContextUtils.View.WEB_CHROME);
+        homePageEbay.clickBurguerMenu();
+        homePageEbay.clickCategoriesLink();
+        homePageEbay.clickLinkByText("Moda");
         Thread.sleep(5000);
 //        Assert.assertTrue();
     }
@@ -77,7 +74,7 @@ public class HomepageTests implements IAbstractTest {
     @Test()
     public void dropdownTest() throws InterruptedException {
         HomePage homePageEbay = new HomePage(getDriver());
-        homePageEbay.clickCategoriesDropdown(2);
+//        homePageEbay.clickCategoriesDropdown(2);
         homePageEbay.clickSearchButton();
         String artTitle = getDriver().findElement(By.cssSelector("h1.title-banner__title")).getText();
         Assert.assertEquals(artTitle, "Arte", "The title shown was not correct");

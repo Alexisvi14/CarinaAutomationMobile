@@ -10,4 +10,7 @@ public abstract class ProductDetailPageBase extends AbstractPage {
     }
 
     public abstract String getProductTitle();
+    public abstract void switchToWindow();
+
+    public abstract boolean isTitlePresent();
 }

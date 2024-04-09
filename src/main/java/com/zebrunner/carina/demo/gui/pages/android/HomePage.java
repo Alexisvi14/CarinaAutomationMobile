@@ -6,12 +6,14 @@ import com.zebrunner.carina.demo.gui.pages.common.ProductDetailPageBase;
 import com.zebrunner.carina.demo.gui.pages.common.SportsPageBase;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
-import org.w3c.dom.html.HTMLInputElement;
 
 import java.util.List;
+import java.util.Set;
+
 @DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = HomePageBase.class)
 public class HomePage extends HomePageBase {
     @FindBy(xpath = "//a[@_sp='m570.l1524']")
@@ -22,7 +24,9 @@ public class HomePage extends HomePageBase {
     ExtendedWebElement searchButton;
     @FindBy(xpath = "//ul[@class='srp-results srp-list clearfix']")
     List<ExtendedWebElement> searchedElements;
-    @FindBy(id = "gh-cat")
+    @FindBy(xpath = "//button[@class='gh-header-item__button gh__needs-js gh-header-item__menu']")
+    ExtendedWebElement burguerMenu;
+    @FindBy(xpath = "//span[contains(text(),'Categorías')]")
     ExtendedWebElement dropdownCategories;
     @FindBy(linkText = "Deportes")
     ExtendedWebElement sportsCategory;
@@ -40,11 +44,34 @@ public class HomePage extends HomePageBase {
 
     @FindBy(id = "com.ebay.mobile:id/search_src_text")
     ExtendedWebElement searchBoxText;
-    @FindBy(xpath = "(//li[starts-with(@id, 'item')])[1]")
+    @FindBy(xpath = "(//div[@class='s-item__image-wrapper image-treatment'])[2]")
     ExtendedWebElement firstSearchedElement;
 
     public HomePage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    public void switchToWindow(){
+        String parent = getDriver().getWindowHandle();
+        Set<String> handles=getDriver().getWindowHandles();
+        for (String handle:handles) {
+            System.out.println(handle);
+            if (!handle.equals(parent)){
+                getDriver().switchTo().window(handle);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void clickBurguerMenu() {
+        burguerMenu.click();
+    }
+
+    @Override
+    public void clickLinkByText(String text) {
+        getDriver().findElement(By.linkText(text)).click();
     }
 
     @Override
@@ -90,8 +117,13 @@ public class HomePage extends HomePageBase {
     }
 
     @Override
-    public void clickCategoriesDropdown(int index) throws InterruptedException {
-        selectDropdownElementByIndex(dropdownCategories, index);
+    public void clickCategoriesLink() {
+        dropdownCategories.click();
+    }
+
+    @Override
+    public void clickCategoriesDropdown(String menuToSelect, String categoryToSelect) throws InterruptedException {
+        selectDropdownElementByText(dropdownCategories, categoryToSelect);
         Thread.sleep(3000);
     }
 
@@ -103,6 +135,7 @@ public class HomePage extends HomePageBase {
     @Override
     public ProductDetailPageBase clickOnFirstElement() {
         firstSearchedElement.click();
+        switchToWindow();
         return initPage(getDriver(), ProductDetailPageBase.class);
     }
 
@@ -110,4 +143,10 @@ public class HomePage extends HomePageBase {
         Select drop = new Select(dropdown.getElement());
         drop.selectByIndex(index);
     }
+
+    private void selectDropdownElementByText(ExtendedWebElement dropdown, String text){
+        Select drop = new Select(dropdown.getElement());
+        drop.selectByVisibleText(text);
+    }
+
 }
