@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Carina Demo Tests - Mobile Sample (Android)" verbose="1" parallel="methods">
+<suite name="Android Tests" verbose="1" parallel="methods">
 
 	<parameter name="suiteOwner" value="qpsdemo" />
 	<parameter name="provider" value="mcloud"/>
@@ -15,7 +15,7 @@
 
 	<test name="Mobile test">
 		<classes>
-			<class name="com.zebrunner.carina.demo.MobileSampleTest" />
+			<class name="com.zebrunner.carina.demo.HomepageTests" />
 		</classes>
 	</test>
 

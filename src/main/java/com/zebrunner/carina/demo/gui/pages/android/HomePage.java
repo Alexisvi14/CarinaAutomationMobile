@@ -2,23 +2,25 @@ package com.zebrunner.carina.demo.gui.pages.android;
 
 import com.zebrunner.carina.demo.gui.pages.common.HomePageBase;
 import com.zebrunner.carina.demo.gui.pages.common.LoginPageBase;
+import com.zebrunner.carina.demo.gui.pages.common.ProductDetailPageBase;
 import com.zebrunner.carina.demo.gui.pages.common.SportsPageBase;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
+import org.w3c.dom.html.HTMLInputElement;
 
 import java.util.List;
 @DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = HomePageBase.class)
 public class HomePage extends HomePageBase {
     @FindBy(xpath = "//a[@_sp='m570.l1524']")
     ExtendedWebElement loginButton;
-    @FindBy(id = "com.ebay.mobile:id/search_box")
+    @FindBy(id = "kw")
     ExtendedWebElement searchBox;
-    @FindBy(id = "gh-btn")
+    @FindBy(className = "gh-search__submitbtn")
     ExtendedWebElement searchButton;
-    @FindBy(css = "div#srp-river-results li")
+    @FindBy(xpath = "//ul[@class='srp-results srp-list clearfix']")
     List<ExtendedWebElement> searchedElements;
     @FindBy(id = "gh-cat")
     ExtendedWebElement dropdownCategories;
@@ -38,6 +40,8 @@ public class HomePage extends HomePageBase {
 
     @FindBy(id = "com.ebay.mobile:id/search_src_text")
     ExtendedWebElement searchBoxText;
+    @FindBy(xpath = "(//li[starts-with(@id, 'item')])[1]")
+    ExtendedWebElement firstSearchedElement;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -51,8 +55,7 @@ public class HomePage extends HomePageBase {
 
     @Override
     public void clickSearchBox(String elementToSearch) {
-        searchBox.click();
-        searchBoxText.type(elementToSearch);
+        searchBox.type(elementToSearch);
     }
 
     @Override
@@ -95,6 +98,12 @@ public class HomePage extends HomePageBase {
     @Override
     public void clickCloseAd() {
         closeAd.click();
+    }
+
+    @Override
+    public ProductDetailPageBase clickOnFirstElement() {
+        firstSearchedElement.click();
+        return initPage(getDriver(), ProductDetailPageBase.class);
     }
 
     private void selectDropdownElementByIndex(ExtendedWebElement dropdown, int index){

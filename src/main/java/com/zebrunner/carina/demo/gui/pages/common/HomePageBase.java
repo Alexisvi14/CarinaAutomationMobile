@@ -33,4 +33,5 @@ public abstract class HomePageBase extends AbstractPage {
 
     public abstract void clickCloseAd();
 
+    public abstract ProductDetailPageBase clickOnFirstElement();
 }
