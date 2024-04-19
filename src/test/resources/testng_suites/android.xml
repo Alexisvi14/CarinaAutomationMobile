@@ -15,7 +15,7 @@
 
 	<test name="Mobile test">
 		<classes>
-			<class name="com.zebrunner.carina.demo.HomepageTests" />
+			<class name="com.zebrunner.carina.demo.EbayTests" />
 		</classes>
 	</test>
 

@@ -16,4 +16,7 @@ public abstract class SportsPageBase extends AbstractPage {
     }
 
     public abstract void iterateCategorySection(String linkToSelect);
+
+    public abstract boolean isTitlePresent();
+    public abstract void clickSection(String section);
 }

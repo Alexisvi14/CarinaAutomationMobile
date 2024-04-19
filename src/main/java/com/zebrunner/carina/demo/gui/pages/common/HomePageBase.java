@@ -43,4 +43,6 @@ public abstract class HomePageBase extends AbstractPage implements IMobileUtils 
     public abstract void clickBurguerMenu();
 
     public abstract void clickLinkByText(String text);
+
+    public abstract void clickMoreMenu();
 }

@@ -2,21 +2,19 @@ package com.zebrunner.carina.demo;
 
 import com.zebrunner.carina.core.IAbstractTest;
 import com.zebrunner.carina.core.registrar.ownership.MethodOwner;
-import com.zebrunner.carina.demo.gui.pages.android.HomePage;
 import com.zebrunner.carina.demo.gui.pages.common.HomePageBase;
 import com.zebrunner.carina.demo.utils.MobileContextUtils;
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 
-public class HomepageTests implements IAbstractTest {
+public class EbayTests implements IAbstractTest {
 
     @BeforeMethod
     public void openChrome(){
-        getDriver().get("https://www.ebay.com/");
+        getDriver().get("https://www.ebay.com");
     }
 
 //                      ESTE CASO NO SE PUEDE LLEVAR A CABO POR INCLUSION DE CAPTCHAS
@@ -45,7 +43,7 @@ public class HomepageTests implements IAbstractTest {
         return data;
     }
 
-    @Test()
+    @Test(description = "Text Box functionality")
     @MethodOwner(owner = "Alexis")
     public void searchButtonTest() {
         HomePageBase homePageEbay = initPage(getDriver(), HomePageBase.class);
@@ -59,7 +57,7 @@ public class HomepageTests implements IAbstractTest {
         Assert.assertTrue(productDetailPage.isTitlePresent());
     }
 
-    @Test()
+    @Test(description = "Fashion link articles")
     public void submenuElements() throws InterruptedException {
         HomePageBase homePageEbay = initPage(getDriver(), HomePageBase.class);
         MobileContextUtils mobileContextUtils = new MobileContextUtils();
@@ -71,29 +69,36 @@ public class HomepageTests implements IAbstractTest {
 //        Assert.assertTrue();
     }
 
-    @Test()
+    @Test(description = "All categories dropdown")
     public void dropdownTest() throws InterruptedException {
-        HomePage homePageEbay = new HomePage(getDriver());
-//        homePageEbay.clickCategoriesDropdown(2);
-        homePageEbay.clickSearchButton();
-        String artTitle = getDriver().findElement(By.cssSelector("h1.title-banner__title")).getText();
-        Assert.assertEquals(artTitle, "Arte", "The title shown was not correct");
+        HomePageBase homePageEbay = initPage(getDriver(), HomePageBase.class);
+        MobileContextUtils mobileContextUtils = new MobileContextUtils();
+        mobileContextUtils.switchMobileContext(MobileContextUtils.View.WEB_CHROME);
+        homePageEbay.clickBurguerMenu();
+        homePageEbay.clickCategoriesLink();
+        homePageEbay.clickLinkByText("Todas las categorías");
+        Thread.sleep(5000);
     }
 
-    @Test()
-    public void hoverSportsTest(){
-        HomePage homePageEbay = new HomePage(getDriver());
-        homePageEbay.hoverSportsLink();
-//        WebElement link = wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Vende con eBay")));
-//        Assert.assertTrue(link.isDisplayed());
-//        link.click();
-    }
-    @Test()
-    public void sportList() throws InterruptedException {
-        HomePage homePageEbay = new HomePage(getDriver());
+    @Test(description = "Sports link articles")
+    public void clickSportsLinkTest() throws InterruptedException {
+        HomePageBase homePageEbay = initPage(getDriver(), HomePageBase.class);
+        MobileContextUtils mobileContextUtils = new MobileContextUtils();
+        mobileContextUtils.switchMobileContext(MobileContextUtils.View.WEB_CHROME);
+        homePageEbay.clickBurguerMenu();
+        homePageEbay.clickCategoriesLink();
         var sportsPage = homePageEbay.clickSportsLink();
-        String sportsTitle = getDriver().findElement(By.cssSelector("h1.title-banner__title")).getText();
-        Assert.assertTrue(sportsTitle.startsWith("Artículos"));
-        sportsPage.iterateCategorySection("Equipo de Boxeo y MMA");
+        Thread.sleep(5000);
+        Assert.assertTrue(sportsPage.isTitlePresent());
+    }
+    @Test(description = "Sports link functionality")
+    public void sportList() {
+        HomePageBase homePageEbay = initPage(getDriver(), HomePageBase.class);
+        MobileContextUtils mobileContextUtils = new MobileContextUtils();
+        mobileContextUtils.switchMobileContext(MobileContextUtils.View.WEB_CHROME);
+        homePageEbay.clickBurguerMenu();
+        homePageEbay.clickCategoriesLink();
+        var sportsPage = homePageEbay.clickSportsLink();
+        sportsPage.clickSection("Golf");
     }
 }

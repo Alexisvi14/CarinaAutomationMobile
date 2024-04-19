@@ -28,8 +28,11 @@ public class HomePage extends HomePageBase {
     ExtendedWebElement burguerMenu;
     @FindBy(xpath = "//span[contains(text(),'Categorías')]")
     ExtendedWebElement dropdownCategories;
-    @FindBy(linkText = "Deportes")
+    @FindBy(linkText = "Artículos deportivos")
     ExtendedWebElement sportsCategory;
+
+    @FindBy(xpath = "//span[normalize-space()='Más']")
+    ExtendedWebElement moreMenu;
     @FindBy(xpath = "(//a[contains(text(), 'Moda')])[2]")
     ExtendedWebElement fashionCategory;
 
@@ -75,6 +78,11 @@ public class HomePage extends HomePageBase {
     }
 
     @Override
+    public void clickMoreMenu() {
+        moreMenu.click();
+    }
+
+    @Override
     public LoginPageBase clickLoginButton() {
         loginButton.click();
         return initPage(getDriver(), LoginPageBase.class);
@@ -103,6 +111,7 @@ public class HomePage extends HomePageBase {
 
     @Override
     public SportsPageBase clickSportsLink() {
+        sportsCategory.click();
         return initPage(getDriver(), SportsPageBase.class);
     }
 
